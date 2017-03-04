@@ -4,4 +4,10 @@ SwipeDetector is a function written in pure js. It helps you to detect if swipe 
 
 #Usage:
 
-`xyz.html`
+
+
+`var el = document.getElementById('swipeArea');`
+ 
+`var sw = new SwipeDetect(el, 20); //20 means minimum swipe it should consider to decide if is swipe or not`
+
+
