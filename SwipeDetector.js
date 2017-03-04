@@ -1,5 +1,6 @@
 function SwipeDetect(el, maxSwipe = 50) {
   var that	= this;
+  
   this.elm = el;
   this.isSwiping = false;
   this.swipeStarted = 0;
@@ -25,11 +26,14 @@ function SwipeDetect(el, maxSwipe = 50) {
   this.mouseUp = function(e) {
     e.preventDefault();
     that.isSwiping = false;
+	
+	return (sw.isSwiped());
   }
 
   this.mouseMove = function(e) {
-    e.preventDefault();
+    //e.preventDefault();
     if (that.isSwiping) {
+
       if (that.swipeStarted < e.clientX) // swiping right side --->
         if (e.clientX >= (that.swipeStarted + maxSwipe)) {
           that.swipeState = 'right';
@@ -45,6 +49,7 @@ function SwipeDetect(el, maxSwipe = 50) {
     }
 	
 	that.swipeState = 'none';
+
   }
   
   
@@ -52,25 +57,34 @@ function SwipeDetect(el, maxSwipe = 50) {
     e.preventDefault();
     that.isSwiping = true;
     that.swipeStarted = e.changedTouches[0].clientX;
+
   }
 
   this.touchUp = function(e) { //touch end
     e.preventDefault();
     that.isSwiping = false;
+	return (sw.isSwiped());
   }
 
   this.touchMove = function(e) { //touch move
     e.preventDefault();
-    if (this.isSwiping) {
+    if (this.isSwiping){
 
-      if (this.swipeStarted < e.clientX) // swiping right side --->
-        if (e.clientX >= (this.swipeStarted + maxSwipe))
-          return ("right");
+      if (that.swipeStarted < e.clientX) // swiping right side --->
+        if (e.clientX >= (that.swipeStarted + maxSwipe)) {
+          that.swipeState = 'right';
+		  return;
+		}
 
-      if (this.swipeStarted > e.clientX) // swiping left side <---
-        if (e.clientX <= (this.swipeStarted + maxSwipe))
-        return ("left");
+      if (that.swipeStarted > e.clientX){ // swiping left side <---
+        if (e.clientX <= (that.swipeStarted + maxSwipe)) {
+          that.swipeState = 'left';
+		  return;
+		}
+	  }
     }
+	
+	that.swipeState = 'none';
   }
 
   this.elm.addEventListener('mousedown', this.mouseDown, false);
